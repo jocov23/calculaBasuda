@@ -30,7 +30,7 @@ std::vector<std::string> funcaoVetor (unsigned long long int decimal){
 
 int main() {
     //numero maximo = 18446744073709551615 (18 quintilhões)
-    unsigned long long int decimal = 1;
+    unsigned long long int decimal = 184467440726178461;
     std::vector <std::string> vetorConvertido = funcaoVetor (decimal);
 
     //iteração sobre os binarios convertidos
