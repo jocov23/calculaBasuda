@@ -5,6 +5,7 @@
 
 //declaração de base de origem e base de destino
 int baseOrigem, baseDestino;
+std::string valor;
 
 //dicionario para mapear Resto : RestoConvertido
 std::map<std::string, std::string> valores = {
@@ -42,7 +43,13 @@ std::map<std::string, std::string> valores = {
     {"31", "V"}
     
 };
-std::vector<std::string> funcaoVetor (unsigned long long int valorDecimal){
+
+///std::vector<int> funcaoVetorParadecimal()
+//{
+   // return 0;
+//}
+
+std::vector<std::string> funcaoVetorDoDecimal (unsigned long long int valorDecimal){
     
     std::vector<std::string> valoresConvertidosDoDecimal = {"null"};
     //variavel de resto 
@@ -54,7 +61,9 @@ std::vector<std::string> funcaoVetor (unsigned long long int valorDecimal){
     //variavel do resto (como string) é adicionada ao vetor
     valoresConvertidosDoDecimal[0] = valores[restoString];
     //cout decimal para debug
+
     //std::cout << valorDecimal << std::endl;
+
     //valor decimal é dividido para continuar operação
     valorDecimal/=baseDestino;
     
@@ -69,7 +78,9 @@ std::vector<std::string> funcaoVetor (unsigned long long int valorDecimal){
             //adiciona o resto no vetor de valores convertidos
             valoresConvertidosDoDecimal.push_back(valores[restoString]);
             //cout decimal para debug
+
             //std::cout << valorDecimal << std::endl;
+
             //valor decimal é dividido para continuar operação
             valorDecimal/=baseDestino;
 
@@ -80,18 +91,52 @@ std::vector<std::string> funcaoVetor (unsigned long long int valorDecimal){
 
 int main() {
     //numero maximo = 18446744073709551615 (18 quintilhões)
-    unsigned long long int valordecimal = 18293449;
-    std::cout << ("Digite a base de destino: ");
-    std::cin >> (baseDestino);
-    //chama função que converte (função de vetor)
-    std::vector <std::string> valoresConvertidosDodecimal = funcaoVetor (valordecimal);
-
-    //iteração sobre os binarios convertidos em ordem inversa do vetor
-    std::cout << "valor convertido comeca aqui" << std::endl;
-    for (int i = valoresConvertidosDodecimal.size()-1; i >= 0; i--){
-        std::cout << valoresConvertidosDodecimal[i];
-    }
-    return 99999;
+    unsigned long long int valordecimal;
+    int parar = 0;
+    //ciclo de repetição
+    while (true) {
+        std::cout << ("Digite a base de Origem: ");
+        std::cin >> (baseOrigem);
+        std::cout << ("Digite o valor desejado: ");
+        std::cin >> (valor);
+        std::cout << ("Digite a base de destino: ");
+        std::cin >> (baseDestino);
+        //chama função que converte (função de vetor)
+        
+        if (baseOrigem == 10){
+            int negativo = valor.find('-');
+            //validação de numero negativo
+            if (negativo != std::string::npos){
+                std::cout << ("\n\nInsira um valor positivo!\n\n");
+            }else{
+                //converte a string de valores para unsigned long long int
+                valordecimal = std::stoull(valor);
+                //atribui valores ao vetor de numeros convertidos
+                std::vector <std::string> valoresConvertidosDodecimal = funcaoVetorDoDecimal (valordecimal);
+                //itera sobre os valores convertidos e mostra no terminal
+                std::cout << "valor convertido comeca aqui" << std::endl;
+                for (int i = valoresConvertidosDodecimal.size()-1; i >= 0; i--){
+                    std::cout << valoresConvertidosDodecimal[i];
+                }
+            
+                std::cout << ("\n\n\nDigite 1 para interromper, qualquer outra tecla para continuar: ");
+                std::cin >> (parar);
+                if (parar == 1){
+                    break;
+                }
+                std::cout << ("\n\n\n");
+            }
+        
+        
+        }
     
+        //iteração sobre os binarios convertidos em ordem inversa do vetor
+        // std::cout << "valor convertido comeca aqui" << std::endl;
+        // for (int i = valoresConvertidosDodecimal.size()-1; i >= 0; i--){
+        //     std::cout << valoresConvertidosDodecimal[i];
+        // }
+        // return 99999;
+    }
 
 }
+
