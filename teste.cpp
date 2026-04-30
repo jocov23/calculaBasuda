@@ -42,54 +42,54 @@ std::map<std::string, std::string> valores = {
     {"31", "V"}
     
 };
-std::vector<std::string> funcaoVetor (unsigned long long int decimal){
+std::vector<std::string> funcaoVetor (unsigned long long int valorDecimal){
     
-    std::vector<std::string> vetorConvertido = {"null"};
+    std::vector<std::string> valoresConvertidosDoDecimal = {"null"};
     //variavel de resto 
     unsigned long long int resto;
     //divisão inicial fora de loop para inicializar o vetor com valor valido(tirar o null)
-    resto = decimal % baseDestino; 
-    //funcao to_string transforma o inteiro "resto" em string para ser colocado na variavel que armazenará o resto como string
-    std::string valorConvertidoString = std::to_string(resto);
+    resto = valorDecimal% baseDestino; 
+    //funcao to_string transforma o inteiro "resto" em string e atribui a variavel restoString
+    std::string restoString = std::to_string(resto);
     //variavel do resto (como string) é adicionada ao vetor
-    vetorConvertido[0] = valores[valorConvertidoString] ;
+    valoresConvertidosDoDecimal[0] = valores[restoString];
     //cout decimal para debug
-    std::cout << decimal << std::endl;
+    //std::cout << valorDecimal << std::endl;
     //valor decimal é dividido para continuar operação
-    decimal/=baseDestino;
+    valorDecimal/=baseDestino;
     
     //enquanto decimal for maior que 0, será constantemente dividido
     //seu resto continuadamente guardado no vetorConvertido
-    while (decimal > 0){
+    while (valorDecimal > 0){
             
             //divisao do decimal para atribuir resto
-            resto = decimal % baseDestino;  
+            resto = valorDecimal % baseDestino;  
             //converte o resto em uma variavel de String
-            valorConvertidoString = std::to_string(resto);
+            restoString = std::to_string(resto);
             //adiciona o resto no vetor de valores convertidos
-            vetorConvertido.push_back(valores[valorConvertidoString]);
+            valoresConvertidosDoDecimal.push_back(valores[restoString]);
             //cout decimal para debug
-            std::cout << decimal << std::endl;
+            //std::cout << valorDecimal << std::endl;
             //valor decimal é dividido para continuar operação
-            decimal/=baseDestino;
+            valorDecimal/=baseDestino;
 
     }
     //apos o fim do while, quando decimal chega a 0, a função retorna o vetor com os valores atribuidos
-    return vetorConvertido;
+    return valoresConvertidosDoDecimal;
 }
 
 int main() {
     //numero maximo = 18446744073709551615 (18 quintilhões)
-    unsigned long long int decimal = 18293449;
+    unsigned long long int valordecimal = 18293449;
     std::cout << ("Digite a base de destino: ");
     std::cin >> (baseDestino);
     //chama função que converte (função de vetor)
-    std::vector <std::string> vetorConvertido = funcaoVetor (decimal);
+    std::vector <std::string> valoresConvertidosDodecimal = funcaoVetor (valordecimal);
 
-    //iteração sobre os binarios convertidos
+    //iteração sobre os binarios convertidos em ordem inversa do vetor
     std::cout << "valor convertido comeca aqui" << std::endl;
-    for (int i = vetorConvertido.size()-1; i >= 0; i--){
-        std::cout << vetorConvertido[i];
+    for (int i = valoresConvertidosDodecimal.size()-1; i >= 0; i--){
+        std::cout << valoresConvertidosDodecimal[i];
     }
     return 99999;
     
