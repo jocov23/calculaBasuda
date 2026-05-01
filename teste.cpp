@@ -2,45 +2,30 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <cmath>
 
 //declaração de base de origem e base de destino
 int baseOrigem, baseDestino;
 std::string valor;
+std::string caracteresEspeciais ="-+_!@#$%¨&*(){}[]<>:;?^~´`.|'"",\\";
+std::string caractereInvalido = "";
 
 //dicionario para mapear Resto : RestoConvertido
 std::map<std::string, std::string> valores = {
-    {"0", "0"},
-    {"1", "1"},
-    {"2", "2"},
-    {"3", "3"},
-    {"4", "4"},
-    {"5", "5"},
-    {"6", "6"},
-    {"7", "7"},
-    {"8", "8"},
-    {"9", "9"},
-    {"10", "A"},
-    {"11", "B"},
-    {"12", "C"},
-    {"13", "D"},
-    {"14", "E"},
-    {"15", "F"},
-    {"16", "G"},
-    {"17", "H"},
-    {"18", "I"},    
-    {"19", "J"},
-    {"20", "K"},
-    {"21", "L"},
-    {"22", "M"},
-    {"23", "N"},
-    {"24", "O"},
-    {"25", "P"},
-    {"26", "Q"},
-    {"27", "R"},
-    {"28", "S"},
-    {"29", "T"},
-    {"30", "U"},
-    {"31", "V"}
+    {"0", "0"}, {"1", "1"},{"2", "2"},{"3", "3"},{"4", "4"},{"5", "5"},{"6", "6"},{"7", "7"},
+    {"8", "8"},{"9", "9"},{"10", "A"},{"11", "B"},{"12", "C"},{"13", "D"},{"14", "E"},
+    {"15", "F"},{"16", "G"},{"17", "H"},{"18", "I"},{"19", "J"},{"20", "K"},{"21", "L"},
+    {"22", "M"},{"23", "N"},{"24", "O"},{"25", "P"},{"26", "Q"},{"27", "R"},{"28", "S"},
+    {"29", "T"},{"30", "U"},{"31", "V"}
+    
+};
+//dicionario para mapear RestoConvertido : Resto
+std::map<std::string, std::string> valoresInverso = {
+    {"0", "0"}, {"1", "1"},{"2", "2"},{"3", "3"},{"4", "4"},{"5", "5"},{"6", "6"},{"7", "7"},
+    {"8", "8"},{"9", "9"},{"A", "10"},{"B", "11"},{"C", "12"},{"D", "13"},{"E", "14"},
+    {"F", "15"},{"G", "16"},{"H", "17"},{"I", "18"},{"J", "19"},{"K", "20"},{"L", "21"},
+    {"M", "22"},{"N", "23"},{"O", "24"},{"P", "25"},{"Q", "26"},{"R", "27"},{"S", "28"},
+    {"T", "29"},{"U", "30"},{"V", "31"}
     
 };
 
@@ -48,6 +33,24 @@ std::map<std::string, std::string> valores = {
 //{
    // return 0;
 //}
+int funcaoParaDecimal (std::string valor, int baseOrigem){
+    int valorDecimal=0;
+    std::vector <std::string> valoresConvertidosParaDecimal = {"null"};
+    int expoente = valor.size()-1;
+    for (int i = 0; i< valor.size(); i++){
+        char valorChar = valor[i];
+        std::string valorString(1, valorChar);
+        std::string caractereConvertido = valoresInverso[valorString];
+        int inteiroCaractere = std::stoi(caractereConvertido);
+        valorDecimal+= inteiroCaractere * (std::pow(baseOrigem, expoente));
+        std::cout << valorDecimal << std::endl;
+        expoente-=1;
+
+    }
+
+    return valorDecimal;
+}
+
 
 std::vector<std::string> funcaoVetorDoDecimal (unsigned long long int valorDecimal){
     
@@ -91,52 +94,79 @@ std::vector<std::string> funcaoVetorDoDecimal (unsigned long long int valorDecim
 
 int main() {
     //numero maximo = 18446744073709551615 (18 quintilhões)
-    unsigned long long int valordecimal;
+    unsigned long long int valorDecimal;
     int parar = 0;
     //ciclo de repetição
     while (true) {
-        std::cout << ("Digite a base de Origem: ");
+        std::string caractereInvalido = "";
+        std::cout << ("Digite a base de Origem[2-32] ou '1' para sair: ");
         std::cin >> (baseOrigem);
-        std::cout << ("Digite o valor desejado: ");
-        std::cin >> (valor);
+        //termino do programa
+        if (baseOrigem == 1){
+            std::cout << ("Encerrando o programa..");
+            break;
+        }
+        //validacao de base valida
+        if (baseOrigem < 1 || baseOrigem > 32) {
+        std::cout << "\nERRO: Base de origem invalida (deve ser entre 2 e 32)!\n\n" << std::endl;
+        continue; 
+        }
+        
         std::cout << ("Digite a base de destino: ");
         std::cin >> (baseDestino);
-        //chama função que converte (função de vetor)
+        //validacao de base valida
+        if (baseDestino < 2 || baseDestino > 32) {
+            std::cout << "ERRO: Base de destino invalida (deve ser entre 2 e 32)!" << std::endl;
+            continue; 
+        }
+        
+        std::cout << "Digite o numero para converter: ";
+        std::cin >> valor;
+        
+        //range loop que modifica cada caractere da string 'valor' para uppercase
+        for (char& caractere : valor){
+            caractere = std::toupper(static_cast<unsigned char>(caractere));
+        }
+        
+        //validação de valor inserido pelo usuario
+        for (int i = baseOrigem; i < 32; i++ ){
+            std::string numeroString = std::to_string(i);
+            caractereInvalido += valores[numeroString];
+        }
+        if (valor.find_first_of(caracteresEspeciais) != std::string::npos){
+                std::cout << ("\n\nInsira um valor valido sem caracteres especiais!\n\n");
+                continue;
+        }else if(valor.find_first_of(caractereInvalido) != std::string::npos){
+            std::cout << ("\n\nInsira um valor valido da base de origem!\n\n");
+            continue;
+        }
+        
         
         if (baseOrigem == 10){
-            int negativo = valor.find('-');
-            //validação de numero negativo
-            if (negativo != std::string::npos){
-                std::cout << ("\n\nInsira um valor positivo!\n\n");
-            }else{
-                //converte a string de valores para unsigned long long int
-                valordecimal = std::stoull(valor);
-                //atribui valores ao vetor de numeros convertidos
-                std::vector <std::string> valoresConvertidosDodecimal = funcaoVetorDoDecimal (valordecimal);
-                //itera sobre os valores convertidos e mostra no terminal
-                std::cout << "valor convertido comeca aqui" << std::endl;
-                for (int i = valoresConvertidosDodecimal.size()-1; i >= 0; i--){
-                    std::cout << valoresConvertidosDodecimal[i];
-                }
-            
-                std::cout << ("\n\n\nDigite 1 para interromper, qualquer outra tecla para continuar: ");
-                std::cin >> (parar);
-                if (parar == 1){
-                    break;
-                }
-                std::cout << ("\n\n\n");
+            //converte a string de valores para unsigned long long int
+            valorDecimal = std::stoull(valor);
+            //atribui valores ao vetor de numeros convertidos
+            std::vector <std::string> valoresConvertidosDodecimal = funcaoVetorDoDecimal (valorDecimal);
+            //itera sobre os valores convertidos e mostra no terminal
+            std::cout << "valor convertido comeca aqui" << std::endl;
+            for (int i = valoresConvertidosDodecimal.size()-1; i >= 0; i--){
+                std::cout << valoresConvertidosDodecimal[i];
             }
+            std::cout << ("\n\n\n");
         
-        
+        }else{
+            valorDecimal = funcaoParaDecimal(valor, baseOrigem);
+            std::vector <std::string> valoresConvertidosDodecimal = funcaoVetorDoDecimal (valorDecimal);
+            //itera sobre os valores convertidos e mostra no terminal
+            std::cout << "valor convertido comeca aqui" << std::endl;
+            for (int i = valoresConvertidosDodecimal.size()-1; i >= 0; i--){
+                std::cout << valoresConvertidosDodecimal[i];
+            }
+            std::cout << ("\n\n\n");
         }
     
-        //iteração sobre os binarios convertidos em ordem inversa do vetor
-        // std::cout << "valor convertido comeca aqui" << std::endl;
-        // for (int i = valoresConvertidosDodecimal.size()-1; i >= 0; i--){
-        //     std::cout << valoresConvertidosDodecimal[i];
-        // }
-        // return 99999;
+        
     }
-
+    return 0;
 }
 
