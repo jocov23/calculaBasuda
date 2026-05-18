@@ -11,14 +11,15 @@ std::string caracteresEspeciais ="-+_!@#$%¨&*(){}[]<>:;?^~´`.|'"",\\";
 std::string caractereInvalido = "";
 
 //dicionario para mapear Resto : RestoConvertido
-std::map<std::string, std::string> valores = {
-    {"0", "0"}, {"1", "1"},{"2", "2"},{"3", "3"},{"4", "4"},{"5", "5"},{"6", "6"},{"7", "7"},
-    {"8", "8"},{"9", "9"},{"10", "A"},{"11", "B"},{"12", "C"},{"13", "D"},{"14", "E"},
-    {"15", "F"},{"16", "G"},{"17", "H"},{"18", "I"},{"19", "J"},{"20", "K"},{"21", "L"},
-    {"22", "M"},{"23", "N"},{"24", "O"},{"25", "P"},{"26", "Q"},{"27", "R"},{"28", "S"},
-    {"29", "T"},{"30", "U"},{"31", "V"}
+// std::map<std::string, std::string> valores = {
+//     {"0", "0"}, {"1", "1"},{"2", "2"},{"3", "3"},{"4", "4"},{"5", "5"},{"6", "6"},{"7", "7"},
+//     {"8", "8"},{"9", "9"},{"10", "A"},{"11", "B"},{"12", "C"},{"13", "D"},{"14", "E"},
+//     {"15", "F"},{"16", "G"},{"17", "H"},{"18", "I"},{"19", "J"},{"20", "K"},{"21", "L"},
+//     {"22", "M"},{"23", "N"},{"24", "O"},{"25", "P"},{"26", "Q"},{"27", "R"},{"28", "S"},
+//     {"29", "T"},{"30", "U"},{"31", "V"}
     
-};
+// };
+std::string valores = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
 //dicionario para mapear RestoConvertido : Resto
 std::map<std::string, std::string> valoresInverso = {
     {"0", "0"}, {"1", "1"},{"2", "2"},{"3", "3"},{"4", "4"},{"5", "5"},{"6", "6"},{"7", "7"},
@@ -33,9 +34,8 @@ std::map<std::string, std::string> valoresInverso = {
 //{
    // return 0;
 //}
-int funcaoParaDecimal (std::string valor, int baseOrigem){
+unsigned long long int funcaoParaDecimal (std::string valor, int baseOrigem){
     int valorDecimal=0;
-    std::vector <std::string> valoresConvertidosParaDecimal = {"null"};
     int expoente = valor.size()-1;
     for (int i = 0; i< valor.size(); i++){
         char valorChar = valor[i];
@@ -43,7 +43,7 @@ int funcaoParaDecimal (std::string valor, int baseOrigem){
         std::string caractereConvertido = valoresInverso[valorString];
         int inteiroCaractere = std::stoi(caractereConvertido);
         valorDecimal+= inteiroCaractere * (std::pow(baseOrigem, expoente));
-        std::cout << valorDecimal << std::endl;
+        //std::cout << valorDecimal << std::endl;
         expoente-=1;
 
     }
@@ -62,7 +62,7 @@ std::vector<std::string> funcaoVetorDoDecimal (unsigned long long int valorDecim
     //funcao to_string transforma o inteiro "resto" em string e atribui a variavel restoString
     std::string restoString = std::to_string(resto);
     //variavel do resto (como string) é adicionada ao vetor
-    valoresConvertidosDoDecimal[0] = valores[restoString];
+    valoresConvertidosDoDecimal[0] = std::string(1, valores[resto]);
     //cout decimal para debug
 
     //std::cout << valorDecimal << std::endl;
@@ -79,7 +79,7 @@ std::vector<std::string> funcaoVetorDoDecimal (unsigned long long int valorDecim
             //converte o resto em uma variavel de String
             restoString = std::to_string(resto);
             //adiciona o resto no vetor de valores convertidos
-            valoresConvertidosDoDecimal.push_back(valores[restoString]);
+            valoresConvertidosDoDecimal.push_back(std::string(1, valores[resto]));
             //cout decimal para debug
 
             //std::cout << valorDecimal << std::endl;
@@ -107,7 +107,7 @@ int main() {
             break;
         }
         //validacao de base valida
-        if (baseOrigem < 1 || baseOrigem > 32) {
+        if (baseOrigem < 2 || baseOrigem > 32) {
         std::cout << "\nERRO: Base de origem invalida (deve ser entre 2 e 32)!\n\n" << std::endl;
         continue; 
         }
@@ -131,7 +131,7 @@ int main() {
         //validação de valor inserido pelo usuario
         for (int i = baseOrigem; i < 32; i++ ){
             std::string numeroString = std::to_string(i);
-            caractereInvalido += valores[numeroString];
+            caractereInvalido += valores[i];
         }
         if (valor.find_first_of(caracteresEspeciais) != std::string::npos){
                 std::cout << ("\n\nInsira um valor valido sem caracteres especiais!\n\n");
