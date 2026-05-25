@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits> //para limpar buffer
 #include <vector>
 #include <string>
 #include <map>
@@ -6,12 +7,12 @@
 //declaração de base de origem e base de destino
 int baseOrigem, baseDestino;
 std::string valor;
-std::string caracteresEspeciais ="-+_!@#$%¨&*(){}[]<>:;?^~´`.|'"",\\";
+std::string caracteresEspeciais ="-+_!@#$%¨&*(){}[]<>:;?^~´`.|'""'\0'' ',\\";
 std::string caractereInvalido = "";
 bool validacao = false;
 
 
-std::string valores = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
+std::string valores = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 int limitesDigitos[] = {0, 0, 64, 40, 32, 27, 24, 22, 21, 20, 19, 19, 18, 18, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14, 14, 13, 13, 13, 13, 13, 13, 12};
 //dicionario para mapear RestoConvertido : Resto
 std::map<std::string, std::string> valoresInverso = {
@@ -19,7 +20,7 @@ std::map<std::string, std::string> valoresInverso = {
     {"8", "8"},{"9", "9"},{"A", "10"},{"B", "11"},{"C", "12"},{"D", "13"},{"E", "14"},
     {"F", "15"},{"G", "16"},{"H", "17"},{"I", "18"},{"J", "19"},{"K", "20"},{"L", "21"},
     {"M", "22"},{"N", "23"},{"O", "24"},{"P", "25"},{"Q", "26"},{"R", "27"},{"S", "28"},
-    {"T", "29"},{"U", "30"},{"V", "31"}
+    {"T", "29"},{"U", "30"},{"V", "31"}, {"W", "32"}, {"X", "33"}, {"Y", "34"}, {"Z", "35"}
     
 };
 
@@ -27,20 +28,24 @@ std::map<std::string, std::string> valoresInverso = {
 void InputBaseOrigem(){
     std::cout << ("Digite a base de Origem[2-32] ou '1' para sair: ");
         std::cin >> (baseOrigem);
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         
         //validacao de base valida
         if (baseOrigem < 1 || baseOrigem > 32) {
         std::cout << "\n\nERRO: Base de origem invalida (deve ser entre 2 e 32)!\n\n" << std::endl;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         validacao = true;
         }
 }
 void inputBaseDestino(){
     
-        std::cout << ("Digite a base de destino: ");
+        std::cout << ("Digite a base de destino[2-32]: ");
         std::cin >> (baseDestino);
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         //validacao de base valida
         if (baseDestino < 2 || baseDestino > 32) {
             std::cout << "\n\nERRO: Base de destino invalida (deve ser entre 2 e 32)!\n\n" << std::endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             validacao = true;
         }
 }
@@ -48,6 +53,7 @@ void inputValor(){
     caractereInvalido = "";
     std::cout << "Digite o numero para converter: ";
         std::cin >> valor;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         
         //range loop que modifica cada caractere da string 'valor' para uppercase
         for (char& caractere : valor){
@@ -55,15 +61,17 @@ void inputValor(){
         }
         
         //validação de valor inserido pelo usuario
-        for (int i = baseOrigem; i < 32; i++ ){
+        for (int i = baseOrigem; i < 36; i++ ){
             std::string numeroString = std::to_string(i);
             caractereInvalido += valores[i];
         }
         if (valor.find_first_of(caracteresEspeciais) != std::string::npos){
             std::cout << ("\n\nInsira um valor valido sem caracteres especiais!\n\n");
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             validacao = true;
         }else if(valor.find_first_of(caractereInvalido) != std::string::npos){
             std::cout << ("\n\nInsira um valor valido da base de origem!\n\n");
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             validacao = true;
         }else if ((int)valor.size() > limitesDigitos[baseOrigem]){
     std::cout << "\n\nAVISO: numero possui " << valor.size() << " digitos mas a base "
