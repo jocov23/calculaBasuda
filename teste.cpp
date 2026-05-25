@@ -143,7 +143,7 @@ std::vector<std::string> funcaoVetorDoDecimal (std::string valor){
     //apos o fim do while, quando decimal chega a 0, a função retorna o vetor com os valores atribuidos
     return valoresConvertidosDoDecimal;
 }
-
+//teste teste
 
 int main() {
     //numero decimal maximo = 18446744073709551615 (18 quintilhões)
