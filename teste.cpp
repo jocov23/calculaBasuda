@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <map>
-#include <cmath>
 
 //declaração de base de origem e base de destino
 int baseOrigem, baseDestino;
@@ -13,6 +12,7 @@ bool validacao = false;
 
 
 std::string valores = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
+int limitesDigitos[] = {0, 0, 64, 40, 32, 27, 24, 22, 21, 20, 19, 19, 18, 18, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14, 14, 13, 13, 13, 13, 13, 13, 12};
 //dicionario para mapear RestoConvertido : Resto
 std::map<std::string, std::string> valoresInverso = {
     {"0", "0"}, {"1", "1"},{"2", "2"},{"3", "3"},{"4", "4"},{"5", "5"},{"6", "6"},{"7", "7"},
@@ -45,6 +45,7 @@ void inputBaseDestino(){
         }
 }
 void inputValor(){
+    caractereInvalido = "";
     std::cout << "Digite o numero para converter: ";
         std::cin >> valor;
         
@@ -64,9 +65,25 @@ void inputValor(){
         }else if(valor.find_first_of(caractereInvalido) != std::string::npos){
             std::cout << ("\n\nInsira um valor valido da base de origem!\n\n");
             validacao = true;
-        }
+        }else if ((int)valor.size() > limitesDigitos[baseOrigem]){
+    std::cout << "\n\nAVISO: numero possui " << valor.size() << " digitos mas a base "
+              << baseOrigem << " suporta no maximo " << limitesDigitos[baseOrigem]
+              << " digitos antes de causar overflow do tipo unsigned long long int (2^64 - 1).\n";
+    std::cout << "Deseja converter mesmo assim e ver o resultado do overflow? (s/n): ";
+    char opcao;
+    std::cin >> opcao;
+    if (opcao != 's' && opcao != 'S'){
+        validacao = true;
+    }
+    }
 }
 
+unsigned long long int potenciaInteira(int base, int exp) {
+    unsigned long long int resultado = 1;
+    for (int i = 0; i < exp; i++)
+        resultado *= base;
+    return resultado;
+}
 
 std::string funcaoParaDecimal (std::string valor, int baseOrigem){
     unsigned long long int valorDecimal=0;
@@ -76,10 +93,8 @@ std::string funcaoParaDecimal (std::string valor, int baseOrigem){
         std::string valorString(1, valorChar);
         std::string caractereConvertido = valoresInverso[valorString];
         int inteiroCaractere = std::stoi(caractereConvertido);
-        valorDecimal+= inteiroCaractere * (std::pow(baseOrigem, expoente));
-        //std::cout << valorDecimal << std::endl;
+        valorDecimal += inteiroCaractere * potenciaInteira(baseOrigem, expoente);
         expoente-=1;
-
     }
     valor = std::to_string(valorDecimal);
     return valor;
@@ -128,7 +143,7 @@ int main() {
     //numero decimal maximo = 18446744073709551615 (18 quintilhões)
     //ciclo de repetição
     while (true) {
-        std::string caractereInvalido = "";
+        validacao = false;
         InputBaseOrigem();
         if (validacao){continue;}
         //termino do programa
@@ -165,11 +180,10 @@ int main() {
             for (int i = valoresConvertidosDodecimal.size()-1; i >= 0; i--){
                 std::cout << valoresConvertidosDodecimal[i];
             }
-            std::cout << ("\n\n-------------------------------------\n\n");
+            std::cout << ("\n\n-----------------------------------------------------\n\n");
         }
     
         
     }
     return 0;
 }
-
