@@ -80,9 +80,12 @@ void inputValor(){
     std::cout << "Deseja converter mesmo assim e ver o resultado do overflow? (s/n): ";
     char opcao;
     std::cin >> opcao;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     if (opcao != 's' && opcao != 'S'){
         validacao = true;
     }
+    
+
     }
 }
 
@@ -151,6 +154,7 @@ int main() {
     //numero decimal maximo = 18446744073709551615 (18 quintilhões)
     //ciclo de repetição
     while (true) {
+        try{
         validacao = false;
         InputBaseOrigem();
         if (validacao){continue;}
@@ -190,7 +194,11 @@ int main() {
             }
             std::cout << ("\n\n-----------------------------------------------------\n\n");
         }
-    
+        }catch(const std::out_of_range& e){
+        std::cout << "\n\nNao é possivel demonstrar resultado do overflow com base de origem '10' !\n\n";
+        validacao=true;
+
+        }
         
     }
     return 0;
