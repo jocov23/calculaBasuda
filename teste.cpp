@@ -13,7 +13,7 @@ bool validacao = false;
 
 
 std::string valores = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-int limitesDigitos[] = {0, 0, 64, 40, 32, 27, 24, 22, 21, 20, 19, 19, 18, 18, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14, 14, 13, 13, 13, 13, 13, 13, 12};
+int limitesDigitos[] = {0, 0, 64, 40, 32, 27, 24, 22, 21, 20, 19, 19, 18, 18, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14, 14, 13, 13, 13, 13, 13, 13, 12, 12, 12, 12, 12};
 //dicionario para mapear RestoConvertido : Resto
 std::map<std::string, std::string> valoresInverso = {
     {"0", "0"}, {"1", "1"},{"2", "2"},{"3", "3"},{"4", "4"},{"5", "5"},{"6", "6"},{"7", "7"},
@@ -26,25 +26,25 @@ std::map<std::string, std::string> valoresInverso = {
 
 
 void InputBaseOrigem(){
-    std::cout << ("Digite a base de Origem[2-32] ou '1' para sair: ");
+    std::cout << ("Digite a base de Origem[2-36] ou '1' para sair: ");
         std::cin >> (baseOrigem);
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         
         //validacao de base valida
-        if (baseOrigem < 1 || baseOrigem > 32) {
-        std::cout << "\n\nERRO: Base de origem invalida (deve ser entre 2 e 32)!\n\n" << std::endl;
+        if (baseOrigem < 1 || baseOrigem > 36) {
+        std::cout << "\n\nERRO: Base de origem invalida (deve ser entre 2 e 36)!\n\n" << std::endl;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         validacao = true;
         }
 }
 void inputBaseDestino(){
     
-        std::cout << ("Digite a base de destino[2-32]: ");
+        std::cout << ("Digite a base de destino[2-36]: ");
         std::cin >> (baseDestino);
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         //validacao de base valida
-        if (baseDestino < 2 || baseDestino > 32) {
-            std::cout << "\n\nERRO: Base de destino invalida (deve ser entre 2 e 32)!\n\n" << std::endl;
+        if (baseDestino < 2 || baseDestino > 36) {
+            std::cout << "\n\nERRO: Base de destino invalida (deve ser entre 2 e 36)!\n\n" << std::endl;
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             validacao = true;
         }
@@ -146,7 +146,7 @@ std::vector<std::string> funcaoVetorDoDecimal (std::string valor){
     return valoresConvertidosDoDecimal;
 }
 
-
+ 
 int main() {
     //numero decimal maximo = 18446744073709551615 (18 quintilhões)
     //ciclo de repetição
