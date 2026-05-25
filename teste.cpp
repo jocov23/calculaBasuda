@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-//declaração de base de origem e base de destino
+
 int baseOrigem, baseDestino;
 std::string valor;
 std::string caracteresEspeciais ="-+_!@#$%¨&*(){}[]<>:;?^~´`.|'""'\0'' ',\\";
@@ -13,8 +13,8 @@ bool validacao = false;
 
 
 std::string valores = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-int limitesDigitos[] = {0, 0, 64, 40, 32, 27, 24, 22, 21, 20, 19, 19, 18, 18, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14, 14, 13, 13, 13, 13, 13, 13, 12};
-//dicionario para mapear RestoConvertido : Resto
+int limitesDigitos[] = {0, 0, 64, 40, 32, 27, 24, 22, 21, 20, 19, 19, 18, 18, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14, 14, 13, 13, 13, 13, 13, 13, 12, 12, 12, 12, 12};
+
 std::map<std::string, std::string> valoresInverso = {
     {"0", "0"}, {"1", "1"},{"2", "2"},{"3", "3"},{"4", "4"},{"5", "5"},{"6", "6"},{"7", "7"},
     {"8", "8"},{"9", "9"},{"A", "10"},{"B", "11"},{"C", "12"},{"D", "13"},{"E", "14"},
@@ -26,25 +26,27 @@ std::map<std::string, std::string> valoresInverso = {
 
 
 void InputBaseOrigem(){
-    std::cout << ("Digite a base de Origem[2-32] ou '1' para sair: ");
+    std::cout << ("Digite a base de Origem[2-36] ou '1' para sair: ");
         std::cin >> (baseOrigem);
+        std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         
         //validacao de base valida
-        if (baseOrigem < 1 || baseOrigem > 32) {
-        std::cout << "\n\nERRO: Base de origem invalida (deve ser entre 2 e 32)!\n\n" << std::endl;
+        if (baseOrigem < 1 || baseOrigem > 36) {
+        std::cout << "\n\nERRO: Base de origem invalida (deve ser entre 2 e 36)!\n\n" << std::endl;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         validacao = true;
         }
 }
 void inputBaseDestino(){
     
-        std::cout << ("Digite a base de destino[2-32]: ");
+        std::cout << ("Digite a base de destino[2-36]: ");
         std::cin >> (baseDestino);
+        std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         //validacao de base valida
-        if (baseDestino < 2 || baseDestino > 32) {
-            std::cout << "\n\nERRO: Base de destino invalida (deve ser entre 2 e 32)!\n\n" << std::endl;
+        if (baseDestino < 2 || baseDestino > 36) {
+            std::cout << "\n\nERRO: Base de destino invalida (deve ser entre 2 e 36)!\n\n" << std::endl;
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             validacao = true;
         }
@@ -77,15 +79,8 @@ void inputValor(){
     std::cout << "\n\nAVISO: numero possui " << valor.size() << " digitos mas a base "
               << baseOrigem << " suporta no maximo " << limitesDigitos[baseOrigem]
               << " digitos antes de causar overflow do tipo unsigned long long int (2^64 - 1).\n";
-    std::cout << "Deseja converter mesmo assim e ver o resultado do overflow? (s/n): ";
-    char opcao;
-    std::cin >> opcao;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    if (opcao != 's' && opcao != 'S'){
         validacao = true;
-    }
-    
-
     }
 }
 
@@ -195,7 +190,7 @@ int main() {
             std::cout << ("\n\n-----------------------------------------------------\n\n");
         }
         }catch(const std::out_of_range& e){
-        std::cout << "\n\nNao é possivel demonstrar resultado do overflow com base de origem '10' !\n\n";
+            std::cout << "\n\nERRO: valor fora do intervalo suportado.\n\n";
         validacao=true;
 
         }
