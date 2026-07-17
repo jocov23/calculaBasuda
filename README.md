@@ -8,7 +8,7 @@
   - **Source base selection:** The user informs which base (from 2 to 32) the entered number is represented in
   - **Destination base selection:** The user informs to which base (from 2 to 32) the number should be converted
   - **Valid input verification:** The program checks whether the informed bases are within the allowed range (2-32) and whether the digits of the entered number are valid for the chosen source base, preventing crashes or incorrect conversions
-  - **Conversion through an intermediate base:** The number is converted from the source base to decimal and then from decimal to the destination base, supporting digits from 0-9 and A-V for bases above 10
+  - **Conversion through an intermediate base:** The number is converted from the source base to decimal and then from decimal to the destination base, supporting digits from 0-9 and A-Z for bases above 10
 ## Getting Started
   To try it out, simply clone this repository, compile the program and run it to see it working through the console
  
